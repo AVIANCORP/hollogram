@@ -60,3 +60,7 @@ def importDatabase(path):
 #        return(loadDBDefinitions(str(path),str(userInput)))
 #    except Exception as e:
 #        return('Unable to decrypt storage media')
+
+def saveObject(string, key, filename):
+    with open(f"./.cache/objects/{encryptString(filename, key)}", 'w', encoding='utf-8') as objectState:
+        encryptString(string,key).write(objectState)

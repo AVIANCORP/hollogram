@@ -102,15 +102,17 @@ blacklistDefinitions = {"ip_list":json.loads(config.get('firewall','blacklist_ip
                         "libraries_array":json.loads(config.get('firewall','blacklist_libraries'))}
 
 hollogram = libraryImport(config.get('config','system_path'))
+try:
+    for functionData in postload:
+        #functionBootstrap = postload[functionData]
+        for moduleFunction, functionData in functionData.items():
+            for inputStrapper in functionData['onboard_function']:
+                if(functionData['onboard_function'][inputStrapper][0] == True):
+                    globals()[inputStrapper] = input(f"{moduleFunction} requires input to continue: ")
+                else:
+                    globals()[inputStrapper] = input(f"{moduleFunction} requests \"{inputStrapper}\" to be entered: ")
 
-#try:
-for functionData in postload:
-    #functionBootstrap = postload[functionData]
-    for moduleFunction, functionData in functionData.items():
-        for inputStrapper in functionData['onboard_function']:
-            if(functionData['onboard_function'][inputStrapper][0] == True):
-                globals()[inputStrapper] = input(f"{moduleFunction} requires input to continue: ")
-            else:
-                globals()[inputStrapper] = input(f"{moduleFunction} requests \"{inputStrapper}\" to be entered: ")
-
-        execResponse = exec(functionData['offboard_function'][0])
+            execResponse = exec(functionData['offboard_function'][0])
+except Exception as e:
+    print(f"[ WARN ] Exception noted while running: \"{moduleFunction}\"")
+    print(f"[ DATA ] {e}")
